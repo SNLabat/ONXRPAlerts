@@ -1,5 +1,6 @@
 let userPositions = [];
 let currentQueueInfo = '';
+let previousQueueInfo = '';
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     if (request.type === 'queueInfo') {
@@ -19,6 +20,11 @@ function checkForAlert() {
     let notificationCount = 0;
 
     if (currentQueueInfo) {
+        if (currentQueueInfo.includes("Connect") && !previousQueueInfo.includes("Connect")) {
+            sendConnectNotification();
+        }
+        previousQueueInfo = currentQueueInfo;
+
         const [position, total] = currentQueueInfo.split('/').map(num => num.trim());
         userPositions.forEach((positionObj, index) => {
             if (parseInt(position) <= parseInt(positionObj.position) && !positionObj.notified) {
@@ -32,7 +38,7 @@ function checkForAlert() {
     if (notificationCount > 0) {
         chrome.browserAction.setBadgeText({ text: notificationCount.toString() });
     } else {
-        chrome.browserAction.setBadgeText({ text: '' }); // Clear badge
+        chrome.browserAction.setBadgeText({ text: '' });
     }
 }
 
@@ -42,6 +48,15 @@ function sendNotification(position) {
         iconUrl: 'images/icon48.png',
         title: 'Queue Alert',
         message: `Your position is now ${position} or better!`
+    });
+}
+
+function sendConnectNotification() {
+    chrome.notifications.create('', {
+        type: 'basic',
+        iconUrl: 'images/icon48.png',
+        title: 'Connect Now!',
+        message: 'You can connect to ONX RP! You have 15 minutes or your position will reset!'
     });
 }
 
