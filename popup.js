@@ -84,5 +84,15 @@ function requestQueueInfo() {
 // Update queue info when the popup is opened
 requestQueueInfo();
 
-// Optional: Continuous update while popup is open
-setInterval(requestQueueInfo, 5000);
+// Function to update the live queue status
+function updateQueueStatus() {
+    chrome.runtime.sendMessage({ type: 'getQueueInfo' }, function(response) {
+        if (response) {
+            document.getElementById('live-queue-status').textContent = 'Current Queue: ' + response;
+        }
+    });
+}
+
+// Update queue status when the popup is opened and continuously update
+updateQueueStatus();
+setInterval(updateQueueStatus, 5000);
