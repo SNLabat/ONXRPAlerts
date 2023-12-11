@@ -43,7 +43,8 @@ function checkForAlert() {
 }
 
 function sendNotification(position) {
-    chrome.notifications.create('', {
+    let notificationId = 'position_' + position; // Unique ID for the notification
+    chrome.notifications.create(notificationId, {
         type: 'basic',
         iconUrl: 'images/icon48.png',
         title: 'Queue Alert',
@@ -52,7 +53,8 @@ function sendNotification(position) {
 }
 
 function sendConnectNotification() {
-    chrome.notifications.create('', {
+    let notificationId = 'connect_notification'; // Unique ID for the connect notification
+    chrome.notifications.create(notificationId, {
         type: 'basic',
         iconUrl: 'images/icon48.png',
         title: 'Connect Now!',
@@ -63,6 +65,10 @@ function sendConnectNotification() {
 function sendQueueInfoToPopup(callback) {
     callback(currentQueueInfo);
 }
+
+chrome.notifications.onClicked.addListener(function(notificationId) {
+    chrome.tabs.create({ url: "https://onx.gg" }); // Open a new tab to the specified URL
+});
 
 chrome.storage.local.get({ positions: [] }, function(data) {
     userPositions = data.positions;
