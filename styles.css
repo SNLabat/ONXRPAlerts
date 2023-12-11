@@ -1,0 +1,102 @@
+body {
+    min-width: 300px;
+    font-family: 'Public Sans', sans-serif;
+    padding: 15px;
+    background-color: #191828; /* Dark background */
+    color: white; /* White text */
+    line-height: 1.6;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+  
+  h1 {
+    color: white;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  #position-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    flex-wrap: wrap;
+  }
+  
+  #position-container input[type="text"] {
+    flex: 1 1 60%; /* Flex grow, shrink and basis */
+    padding: 8px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    background-color: #272a3d;
+    color: white;
+    margin-right: 10px;
+  }
+  
+  #positions-list {
+    margin-right: 10px;
+    list-style-type: none;
+    padding: 0;
+    flex-grow: 1;
+}
+  
+  #positions-list li {
+    background-color: #272a3d;
+    padding: 10px;
+    margin-bottom: 5px;
+    border-radius: 5px;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+  
+#positions-list li span {
+  margin-right: 10px; /* Added right margin for spacing */
+}
+  button {
+    background-color: #ff69b4; /* Pink background for buttons */
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    flex: 1 1 30%; /* Flex grow, shrink and basis */
+    text-align: center;
+    white-space: nowrap;
+  }
+  
+  button:hover {
+    background-color: #ff85c8; /* Lighter shade of pink on hover */
+  }
+  
+  input[type="text"] {
+    border: 1px solid #555;
+    background-color: transparent;
+    color: white;
+    padding: 8px;
+    margin-right: 10px;
+    border-radius: 4px;
+  }
+  
+  /* Media Query for smaller screens */
+  @media (max-width: 600px) {
+    #position-container {
+      flex-direction: column;
+    }
+  
+    #position-container input[type="text"],
+    button {
+      flex-basis: 100%;
+      margin-right: 0;
+      margin-bottom: 10px;
+    }
+  }
+  
+  .queue-info-box {
+    max-width: 100%; /* Ensure it fits within the popup */
+    margin-bottom: 20px;
+  }

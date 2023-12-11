@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>ONX RP Queue Monitor</title>
+  <description>Get real-time alerts for your position in the ONX RP queue.</description>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <style>
+    .positions-list-item {
+      justify-content: space-between;
+      align-items: center;
+    }
+  </style>
+</head>
+<body>
+  <h1>ONX RP Queue Monitor</h1>
+  <div id="position-container">
+    <input type="text" id="new-position" placeholder="Enter position to monitor">
+    <button id="add-position">Add</button>
+  </div>
+  <ul id="positions-list">
+    <!-- Positions will be listed here with remove buttons -->
+  </ul>
+  <script src="popup.js"></script>
+  <div id="notification-text"></div>
+</body>
+</html>
