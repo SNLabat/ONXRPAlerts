@@ -28,19 +28,18 @@ function checkForAlert() {
             if (parseInt(position) <= parseInt(positionObj.position) && !positionObj.notified) {
                 sendNotification(positionObj.position);
                 userPositions[index].notified = true;
+                saveUpdatedPositions(); // Save the updated state
             }
         });
 
-        // Update the badge with the current queue position
         chrome.action.setBadgeText({ text: position });
     } else {
-        // Clear the badge text if there's no queue info
         chrome.action.setBadgeText({ text: '' });
     }
 }
 
 function sendNotification(position) {
-    let notificationId = 'position_' + position; // Unique ID for the notification
+    let notificationId = 'position_' + position;
     chrome.notifications.create(notificationId, {
         type: 'basic',
         iconUrl: 'images/icon48.png',
@@ -50,7 +49,7 @@ function sendNotification(position) {
 }
 
 function sendConnectNotification() {
-    let notificationId = 'connect_notification'; // Unique ID for the connect notification
+    let notificationId = 'connect_notification';
     chrome.notifications.create(notificationId, {
         type: 'basic',
         iconUrl: 'images/icon48.png',
@@ -64,9 +63,13 @@ function sendQueueInfoToPopup(callback) {
 }
 
 chrome.notifications.onClicked.addListener(function(notificationId) {
-    chrome.tabs.create({ url: "https://onx.gg" }); // Open a new tab to the specified URL
+    chrome.tabs.create({ url: "https://onx.gg" });
 });
 
 chrome.storage.local.get({ positions: [] }, function(data) {
     userPositions = data.positions;
 });
+
+function saveUpdatedPositions() {
+    chrome.storage.local.set({ positions: userPositions });
+}
