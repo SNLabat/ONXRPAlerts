@@ -3,7 +3,7 @@
     "name": "ONX RP Alerts",
     "description": "Get real-time alerts for your position in the ONX RP queue.",
     "version": "1.0",
-    "permissions": ["storage", "notifications", "alarms", "https://onx.gg/*"],
+    "permissions": ["storage", "notifications", "https://onx.gg/*"],
     "action": {
       "default_popup": "popup.html",
       "default_icon": {

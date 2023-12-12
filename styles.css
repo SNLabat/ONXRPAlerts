@@ -100,3 +100,13 @@ body {
     max-width: 100%; /* Ensure it fits within the popup */
     margin-bottom: 20px;
   }
+
+  #live-queue-status {
+    background-color: #272a3d; /* Matches the style of list items */
+    color: white;
+    padding: 10px;
+    margin-top: 20px;
+    border-radius: 5px;
+    text-align: center;
+    font-size: 16px; /* Slightly larger font for emphasis */
+  }

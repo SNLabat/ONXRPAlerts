@@ -1,5 +1,6 @@
 let userPositions = [];
 let currentQueueInfo = '';
+let previousQueueInfo = '';
 
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
     if (request.type === 'queueInfo') {
@@ -16,28 +17,30 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse) {
 });
 
 function checkForAlert() {
-    let notificationCount = 0;
-
     if (currentQueueInfo) {
+        if (currentQueueInfo.includes("Connect") && !previousQueueInfo.includes("Connect")) {
+            sendConnectNotification();
+        }
+        previousQueueInfo = currentQueueInfo;
+
         const [position, total] = currentQueueInfo.split('/').map(num => num.trim());
         userPositions.forEach((positionObj, index) => {
             if (parseInt(position) <= parseInt(positionObj.position) && !positionObj.notified) {
                 sendNotification(positionObj.position);
                 userPositions[index].notified = true;
-                notificationCount++;
+                saveUpdatedPositions(); // Save the updated state
             }
         });
-    }
 
-    if (notificationCount > 0) {
-        chrome.browserAction.setBadgeText({ text: notificationCount.toString() });
+        chrome.action.setBadgeText({ text: position });
     } else {
-        chrome.browserAction.setBadgeText({ text: '' }); // Clear badge
+        chrome.action.setBadgeText({ text: '' });
     }
 }
 
 function sendNotification(position) {
-    chrome.notifications.create('', {
+    let notificationId = 'position_' + position;
+    chrome.notifications.create(notificationId, {
         type: 'basic',
         iconUrl: 'images/icon48.png',
         title: 'Queue Alert',
@@ -45,10 +48,28 @@ function sendNotification(position) {
     });
 }
 
+function sendConnectNotification() {
+    let notificationId = 'connect_notification';
+    chrome.notifications.create(notificationId, {
+        type: 'basic',
+        iconUrl: 'images/icon48.png',
+        title: 'Connect Now!',
+        message: 'You can connect to ONX RP! You have 15 minutes or your position will reset!'
+    });
+}
+
 function sendQueueInfoToPopup(callback) {
     callback(currentQueueInfo);
 }
 
+chrome.notifications.onClicked.addListener(function(notificationId) {
+    chrome.tabs.create({ url: "https://onx.gg" });
+});
+
 chrome.storage.local.get({ positions: [] }, function(data) {
     userPositions = data.positions;
 });
+
+function saveUpdatedPositions() {
+    chrome.storage.local.set({ positions: userPositions });
+}
